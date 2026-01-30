@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+
+  /* Brand Palette */
+  --color-primary: #6B5CE7;
+  --color-secondary: #5C9CE7;
+  --color-accent-purple: #E9D5FF;
+  --color-accent-peach: #FFEDD5;
+  --color-text-heading: #1F2937;
+  --color-text-body: #4B5563;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Keeping light mode defaults for MVP consistency as requested for now */
+    --background: #ffffff;
+    --foreground: #171717;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 100%);
+  color: var(--color-text-body);
+  font-family: var(--font-inter), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-text-heading);
+}
+
+@keyframes move-grid {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+.animate-grid-pattern {
+  animation: move-grid 4s linear infinite;
+}
