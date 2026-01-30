@@ -5,6 +5,7 @@ import { getUserProfile, updateAvailability } from "@/lib/db";
 import { Clock, Save, Globe, Loader2, List, Calendar as CalendarIcon, Plus, X, Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import CalendarView from "@/components/CalendarView";
+import ReminderBanner from "@/components/ReminderBanner";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const DAY_INITIALS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -169,6 +170,9 @@ export default function AvailabilityPage() {
 
     return (
         <div className="max-w-6xl mx-auto">
+            <div className="mb-6">
+                <ReminderBanner />
+            </div>
             {/* Header */}
             <div className="mb-6">
                 <h1 className="text-2xl font-bold text-slate-900">Availability</h1>

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ReminderBanner from "@/components/ReminderBanner";
 
 export default function BookingsPage() {
     const { user } = useAuth();
@@ -60,6 +61,7 @@ export default function BookingsPage() {
 
     return (
         <div className="max-w-5xl mx-auto px-4 py-6">
+            <ReminderBanner />
             {/* Header Section */}
             <header className="flex items-center justify-between mb-8 pb-4">
                 <div className="flex items-center gap-3">

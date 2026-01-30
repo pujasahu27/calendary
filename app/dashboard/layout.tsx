@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserProfile } from "@/lib/db";
+import Header from "@/components/Header";
 
 export default function DashboardLayout({
     children,
@@ -123,6 +124,7 @@ export default function DashboardLayout({
 
             {/* Main Content */}
             <main className="flex-1 md:ml-[280px] p-8 overflow-y-auto w-full mr-4 my-4 rounded-[30px] bg-[#6C5DD3]/0">
+                <Header />
                 {children}
             </main>
         </div>

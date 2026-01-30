@@ -11,16 +11,17 @@ import {
     Copy,
     ArrowRight,
     Clock,
-    MoreHorizontal,
-    Settings
+    MoreHorizontal
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Booking } from "@/lib/db";
 import { Timestamp } from "firebase/firestore";
+import { useNotifications } from "@/hooks/useNotifications";
 
 export default function DashboardPage() {
     const { user } = useAuth();
+    const { hasUnread } = useNotifications();
     const [profile, setProfile] = useState<any>(null);
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
@@ -186,17 +187,6 @@ export default function DashboardPage() {
                         </p>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
-                    <button className="relative p-2.5 bg-orange-50 text-orange-500 rounded-xl hover:bg-orange-100 transition-colors">
-                        <Bell className="w-5 h-5" />
-                        {stats.upcoming > 0 && (
-                            <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                        )}
-                    </button>
-                    <Link href="/dashboard/settings" className="p-2.5 bg-slate-50 text-slate-500 rounded-xl hover:bg-slate-100 transition-colors">
-                        <Settings className="w-5 h-5" />
-                    </Link>
-                </div>
             </div>
 
             {/* Stats Grid */}
@@ -258,8 +248,11 @@ export default function DashboardPage() {
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
                     <div className="flex items-start justify-between mb-4">
                         <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">Upcoming</span>
-                        <div className="p-2 bg-orange-50 text-orange-500 rounded-lg">
+                        <div className="relative p-2 bg-orange-50 text-orange-500 rounded-lg">
                             <Bell className="w-5 h-5" />
+                            {hasUnread && (
+                                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                            )}
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2">
