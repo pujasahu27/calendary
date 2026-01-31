@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import type { Booking } from "@/lib/db";
 import { Timestamp } from "firebase/firestore";
 import { useNotifications } from "@/hooks/useNotifications";
-// Import New Components
 import StatsModal from "@/components/StatsModal";
 import { BookingsCalendar, WeeklyChart, MonthSummary, NotificationList } from "@/components/StatsViews";
 
@@ -96,12 +95,10 @@ export default function DashboardPage() {
 
             total++;
 
-            // Handle Firestore Timestamp or Date object
             const bookingDate = booking.date instanceof Timestamp
                 ? booking.date.toDate()
                 : new Date(booking.date as any);
 
-            // Upcoming
             if (bookingDate > now) {
                 upcoming++;
                 if (bookingDate <= sevenDaysFromNow) {
@@ -109,23 +106,19 @@ export default function DashboardPage() {
                 }
             }
 
-            // This Week
             if (bookingDate >= startOfWeek) {
                 week++;
             }
 
-            // This Month
             if (bookingDate >= startOfMonth && bookingDate.getMonth() === currentMonth) {
                 month++;
             }
 
-            // Last Month
             if (bookingDate >= startOfLastMonth && bookingDate <= endOfLastMonth) {
                 lastMonth++;
             }
         });
 
-        // Calculate trends
         const monthTrend = lastMonth > 0 ? Math.round(((month - lastMonth) / lastMonth) * 100) : month * 100;
 
         setStats({
@@ -134,7 +127,7 @@ export default function DashboardPage() {
             thisMonth: month,
             upcoming,
             monthTrend,
-            weekTrend: 0, // Placeholder
+            weekTrend: 0,
             upcomingNext7Days: next7Days
         });
     };
@@ -230,7 +223,6 @@ export default function DashboardPage() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Total Bookings */}
                 <div
                     onClick={() => setActiveModal('total')}
                     className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-[#6B5CE7]/30"
@@ -244,13 +236,8 @@ export default function DashboardPage() {
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold text-slate-900">{stats.total}</span>
                     </div>
-                    <div className="mt-2 flex items-center gap-1 text-xs font-medium text-emerald-600">
-                        <TrendingUp className="w-3 h-3" />
-                        <span>All time</span>
-                    </div>
                 </div>
 
-                {/* This Week */}
                 <div
                     onClick={() => setActiveModal('week')}
                     className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-emerald-500/30"
@@ -264,12 +251,8 @@ export default function DashboardPage() {
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold text-slate-900">{stats.thisWeek}</span>
                     </div>
-                    <div className="mt-2 flex items-center gap-1 text-xs font-medium text-emerald-600">
-                        <span>Since Sunday</span>
-                    </div>
                 </div>
 
-                {/* This Month */}
                 <div
                     onClick={() => setActiveModal('month')}
                     className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-blue-500/30"
@@ -283,16 +266,8 @@ export default function DashboardPage() {
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold text-slate-900">{stats.thisMonth}</span>
                     </div>
-                    <div className="mt-2 flex items-center gap-1 text-xs font-medium">
-                        {stats.monthTrend > 0 ? (
-                            <span className="text-emerald-600">+{stats.monthTrend}% vs last month</span>
-                        ) : (
-                            <span className="text-slate-400">vs last month</span>
-                        )}
-                    </div>
                 </div>
 
-                {/* Upcoming */}
                 <div
                     onClick={() => setActiveModal('upcoming')}
                     className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-orange-500/30"
@@ -308,9 +283,6 @@ export default function DashboardPage() {
                     </div>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold text-slate-900">{stats.upcoming}</span>
-                    </div>
-                    <div className="mt-2 flex items-center gap-1 text-xs font-medium text-slate-500">
-                        <span>Next 7 days: {stats.upcomingNext7Days}</span>
                     </div>
                 </div>
             </div>
@@ -333,14 +305,7 @@ export default function DashboardPage() {
                         onClick={copyToClipboard}
                         className="px-6 py-3 bg-[#6B5CE7] text-white font-medium rounded-xl hover:bg-[#5A4BD1] transition-colors flex items-center justify-center gap-2 shadow-sm shadow-indigo-200"
                     >
-                        {copied ? (
-                            <>Copied!</>
-                        ) : (
-                            <>
-                                <Copy className="w-4 h-4" />
-                                Copy Link
-                            </>
-                        )}
+                        {copied ? <>Copied!</> : <><Copy className="w-4 h-4" /> Copy Link</>}
                     </button>
                 </div>
             </div>
@@ -398,6 +363,6 @@ export default function DashboardPage() {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

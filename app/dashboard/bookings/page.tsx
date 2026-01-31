@@ -133,7 +133,7 @@ export default function BookingsPage() {
                                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#6B5CE7] text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-[#5A4BCF] transition-all hover:-translate-y-0.5"
                                     >
                                         <ExternalLink className="w-4 h-4" />
-                                        View Landing Page
+                                        Schedule a Meeting
                                     </Link>
                                 )}
                                 <button className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all">
@@ -168,8 +168,8 @@ export default function BookingsPage() {
                         <button
                             onClick={() => setActiveTab('upcoming')}
                             className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold transition-all ${activeTab === 'upcoming'
-                                    ? 'bg-white text-[#6B5CE7] shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700'
+                                ? 'bg-white text-[#6B5CE7] shadow-sm'
+                                : 'text-slate-500 hover:text-slate-700'
                                 }`}
                         >
                             Upcoming
@@ -177,8 +177,8 @@ export default function BookingsPage() {
                         <button
                             onClick={() => setActiveTab('past')}
                             className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold transition-all ${activeTab === 'past'
-                                    ? 'bg-white text-[#6B5CE7] shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700'
+                                ? 'bg-white text-[#6B5CE7] shadow-sm'
+                                : 'text-slate-500 hover:text-slate-700'
                                 }`}
                         >
                             Past & Cancelled
@@ -246,8 +246,8 @@ export default function BookingsPage() {
                                                 Meeting with {booking.guestName}
                                             </h3>
                                             <span className={`px-3 py-1 rounded-full text-[10px] uppercase font-black tracking-widest ${booking.status === 'confirmed'
-                                                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                                                    : 'bg-slate-50 text-slate-500 border border-slate-100'
+                                                ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                                                : 'bg-slate-50 text-slate-500 border border-slate-100'
                                                 }`}>
                                                 {booking.status}
                                             </span>
@@ -299,8 +299,8 @@ export default function BookingsPage() {
                                             <button
                                                 onClick={() => booking.meetingLink && copyToClipboard(booking.meetingLink, booking.id)}
                                                 className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm border-2 transition-all ${copiedId === booking.id
-                                                        ? "bg-emerald-500 border-emerald-500 text-white"
-                                                        : "border-slate-100 text-slate-500 hover:border-indigo-100 hover:text-[#6B5CE7] hover:bg-slate-50"
+                                                    ? "bg-emerald-500 border-emerald-500 text-white"
+                                                    : "border-slate-100 text-slate-500 hover:border-indigo-100 hover:text-[#6B5CE7] hover:bg-slate-50"
                                                     }`}
                                             >
                                                 {copiedId === booking.id ? (

@@ -23,6 +23,26 @@ export async function createUserDocument(user: User, username: string) {
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             hours: { start: "09:00", end: "17:00" },
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        },
+        onboardingComplete: true,
+        welcomeMessage: "Welcome to my scheduling page. Please follow the instructions to add an event to my calendar.",
+        language: "English",
+        dateFormat: "DD/MM/YYYY",
+        timeFormat: "12h (am/pm)",
+        country: "India",
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        // Advanced Scheduling Settings
+        settings: {
+            bufferBefore: 15, // minutes
+            bufferAfter: 15, // minutes
+            limitPerDay: 5,
+            limitPerWeek: 20,
+            minNoticeTime: 24, // hours
+            defaultLocation: "Google Meet",
+            defaultInstructions: "A calendar invitation with a video link will be sent to your email address.",
+            vacationMode: false,
+            emailReminders: true,
+            reminderLeadTime: 24 // hours
         }
     });
 
@@ -105,7 +125,12 @@ export async function cancelBooking(bookingId: string) {
 
 export async function updateAvailability(uid: string, availability: any) {
     const userRef = doc(db, "users", uid);
-    await updateDoc(userRef, {
+    await setDoc(userRef, {
         availability: availability
-    });
+    }, { merge: true });
+}
+
+export async function updateUserProfile(uid: string, data: any) {
+    const userRef = doc(db, "users", uid);
+    await setDoc(userRef, data, { merge: true });
 }
