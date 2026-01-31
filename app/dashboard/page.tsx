@@ -10,14 +10,16 @@ import {
     Link as LinkIcon,
     Copy,
     ArrowRight,
-    Clock,
-    MoreHorizontal
+    Clock
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Booking } from "@/lib/db";
 import { Timestamp } from "firebase/firestore";
 import { useNotifications } from "@/hooks/useNotifications";
+// Import New Components
+import StatsModal from "@/components/StatsModal";
+import { BookingsCalendar, WeeklyChart, MonthSummary, NotificationList } from "@/components/StatsViews";
 
 export default function DashboardPage() {
     const { user } = useAuth();
@@ -25,6 +27,10 @@ export default function DashboardPage() {
     const [profile, setProfile] = useState<any>(null);
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Modal State
+    const [activeModal, setActiveModal] = useState<string | null>(null);
+
     const [stats, setStats] = useState({
         total: 0,
         thisWeek: 0,
@@ -174,6 +180,39 @@ export default function DashboardPage() {
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
+            {/* Stats Modals */}
+            <StatsModal
+                isOpen={activeModal === 'total'}
+                onClose={() => setActiveModal(null)}
+                title="Total Bookings Calendar"
+            >
+                <BookingsCalendar bookings={bookings} />
+            </StatsModal>
+
+            <StatsModal
+                isOpen={activeModal === 'week'}
+                onClose={() => setActiveModal(null)}
+                title="This Week's Activity"
+            >
+                <WeeklyChart bookings={bookings} />
+            </StatsModal>
+
+            <StatsModal
+                isOpen={activeModal === 'month'}
+                onClose={() => setActiveModal(null)}
+                title="Month Summary"
+            >
+                <MonthSummary bookings={bookings} />
+            </StatsModal>
+
+            <StatsModal
+                isOpen={activeModal === 'upcoming'}
+                onClose={() => setActiveModal(null)}
+                title="Upcoming Meetings"
+            >
+                <NotificationList bookings={bookings} />
+            </StatsModal>
+
             {/* Welcome Section */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
@@ -192,10 +231,13 @@ export default function DashboardPage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Total Bookings */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                <div
+                    onClick={() => setActiveModal('total')}
+                    className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-[#6B5CE7]/30"
+                >
                     <div className="flex items-start justify-between mb-4">
                         <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">Total Bookings</span>
-                        <div className="p-2 bg-[#6B5CE7]/10 text-[#6B5CE7] rounded-lg">
+                        <div className="p-2 bg-[#6B5CE7]/10 text-[#6B5CE7] rounded-lg group-hover:bg-[#6B5CE7] group-hover:text-white transition-colors">
                             <Calendar className="w-5 h-5" />
                         </div>
                     </div>
@@ -209,10 +251,13 @@ export default function DashboardPage() {
                 </div>
 
                 {/* This Week */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                <div
+                    onClick={() => setActiveModal('week')}
+                    className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-emerald-500/30"
+                >
                     <div className="flex items-start justify-between mb-4">
                         <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">This Week</span>
-                        <div className="p-2 bg-emerald-50 text-emerald-500 rounded-lg">
+                        <div className="p-2 bg-emerald-50 text-emerald-500 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                             <BarChart2 className="w-5 h-5" />
                         </div>
                     </div>
@@ -225,10 +270,13 @@ export default function DashboardPage() {
                 </div>
 
                 {/* This Month */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                <div
+                    onClick={() => setActiveModal('month')}
+                    className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-blue-500/30"
+                >
                     <div className="flex items-start justify-between mb-4">
                         <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">This Month</span>
-                        <div className="p-2 bg-blue-50 text-blue-500 rounded-lg">
+                        <div className="p-2 bg-blue-50 text-blue-500 rounded-lg group-hover:bg-blue-500 group-hover:text-white transition-colors">
                             <TrendingUp className="w-5 h-5" />
                         </div>
                     </div>
@@ -245,10 +293,13 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Upcoming */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                <div
+                    onClick={() => setActiveModal('upcoming')}
+                    className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group hover:border-orange-500/30"
+                >
                     <div className="flex items-start justify-between mb-4">
                         <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">Upcoming</span>
-                        <div className="relative p-2 bg-orange-50 text-orange-500 rounded-lg">
+                        <div className="relative p-2 bg-orange-50 text-orange-500 rounded-lg group-hover:bg-orange-500 group-hover:text-white transition-colors">
                             <Bell className="w-5 h-5" />
                             {hasUnread && (
                                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>

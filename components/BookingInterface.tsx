@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Clock, Check, ChevronLeft, ChevronRight, Globe, Loader2 } from "lucide-react";
+import { Calendar, Clock, Check, ChevronLeft, ChevronRight, Globe, Loader2, Copy, Link as LinkIcon } from "lucide-react";
 import { createBooking } from "@/lib/db";
 import { Timestamp } from "firebase/firestore";
 
@@ -9,6 +9,8 @@ export default function BookingInterface({ profile }: { profile: any }) {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
     const [step, setStep] = useState<"date" | "form" | "success">("date");
+    const [meetingLink, setMeetingLink] = useState<string | null>(null);
+    const [copied, setCopied] = useState(false);
 
     // Booking Form State
     const [guestName, setGuestName] = useState("");
@@ -63,7 +65,7 @@ export default function BookingInterface({ profile }: { profile: any }) {
             const bookingDate = new Date(selectedDate);
             bookingDate.setHours(hours, minutes);
 
-            await createBooking({
+            const { meetingLink } = await createBooking({
                 hostId: profile.uid,
                 guestName,
                 guestEmail,
@@ -71,6 +73,8 @@ export default function BookingInterface({ profile }: { profile: any }) {
                 date: Timestamp.fromDate(bookingDate),
                 duration: 30 // hardcoded for now
             });
+
+            setMeetingLink(meetingLink);
 
             setStep("success");
         } catch (error) {
@@ -102,10 +106,27 @@ export default function BookingInterface({ profile }: { profile: any }) {
                     </div>
                     {/* Note: In a real app we'd fetch the created booking to show the link, 
                         or generate it client-side. For now, the host sees it in their dashboard. */}
-                    <div className="flex items-center gap-3 text-sm text-slate-700 mt-2">
-                        <div className="w-4 h-4 flex items-center justify-center">📹</div>
-                        <span className="text-[#6B5CE7] underline decoration-dashed">Unique video link generated</span>
-                    </div>
+                    {meetingLink && (
+                        <div className="flex items-center justify-between gap-3 text-sm text-slate-700 mt-3 p-2 bg-white rounded-lg border border-slate-200">
+                            <div className="flex items-center gap-2 overflow-hidden">
+                                <LinkIcon className="w-4 h-4 text-[#6B5CE7] flex-shrink-0" />
+                                <a href={meetingLink} target="_blank" className="text-[#6B5CE7] underline truncate hover:text-[#5a4db8] transition-colors">
+                                    {meetingLink}
+                                </a>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(meetingLink);
+                                    setCopied(true);
+                                    setTimeout(() => setCopied(false), 2000);
+                                }}
+                                className="p-1.5 hover:bg-slate-100 rounded-md text-slate-500 hover:text-slate-700 transition-colors"
+                                title="Copy link"
+                            >
+                                {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <button
                     onClick={() => window.location.reload()}

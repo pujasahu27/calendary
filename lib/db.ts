@@ -78,7 +78,7 @@ export async function createBooking(bookingData: Omit<Booking, "id" | "createdAt
         meetingLink,
         createdAt: serverTimestamp()
     });
-    return docRef.id;
+    return { id: docRef.id, meetingLink };
 }
 
 export async function getBookingsForHost(hostId: string) {

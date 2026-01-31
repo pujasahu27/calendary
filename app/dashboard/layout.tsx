@@ -71,16 +71,6 @@ export default function DashboardLayout({
                     </Link>
                 </div>
 
-                <div className="px-6 pb-6">
-                    <div className="bg-[#6C5DD3] rounded-2xl p-4 text-white shadow-lg shadow-indigo-200">
-                        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold mb-3 border border-white/30">
-                            {user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U"}
-                        </div>
-                        <p className="font-bold truncate">{user?.displayName || "User"}</p>
-                        <p className="text-xs text-indigo-200 truncate">{user?.email}</p>
-                    </div>
-                </div>
-
                 <div className="px-6 mb-2">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Main Menu</p>
                 </div>
@@ -110,7 +100,21 @@ export default function DashboardLayout({
                     })}
                 </nav>
 
-                <div className="p-4 mt-auto">
+                <div className="px-6 py-4 mt-auto border-t border-slate-50">
+                    <div className="bg-[#6C5DD3] rounded-2xl p-4 text-white shadow-lg shadow-indigo-100">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold border border-white/30 shrink-0">
+                                {user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U"}
+                            </div>
+                            <div className="min-w-0">
+                                <p className="font-bold truncate text-sm">{user?.displayName || "User"}</p>
+                                <p className="text-[10px] text-indigo-200 truncate">{user?.email}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="p-4">
                     <button
                         onClick={handleLogout}
                         className="flex items-center w-full gap-3 px-4 py-3 text-sm font-medium text-red-500 bg-red-50 rounded-xl hover:bg-red-100 transition-colors"
